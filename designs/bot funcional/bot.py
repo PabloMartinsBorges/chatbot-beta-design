@@ -40,7 +40,7 @@ class App(customtkinter.CTk):
         self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
         self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
 
-        self.sidebar_button_4 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sidebar_button_4 = customtkinter.CTkButton(self.sidebar_frame, command=self.abrir_janela_cadastro)
         self.sidebar_button_4.grid(row=6, column=0, padx=20, pady=10)
        
         
@@ -123,6 +123,8 @@ class App(customtkinter.CTk):
         self.conversa.see(customtkinter.END)
         self.conversa.configure(state='disabled')
 
+
+
     def processar_mensagem(self, mensagem):
         mensagem = mensagem.lower()
 
@@ -143,6 +145,51 @@ class App(customtkinter.CTk):
 
         # Caso não encontre nenhuma correspondência, retorna uma mensagem padrão
         return "Desculpe, não entendi a pergunta. Tente novamente ou reformule a sua pergunta."
+    
+
+
+    def abrir_janela_cadastro(self):
+        janela_cadastro = customtkinter.CTkToplevel(self)
+        janela_cadastro.title("Cadastro de usuário")
+        janela_cadastro.geometry(f"{500}x{400}")
+        janela_cadastro.resizable(True, True)
+
+        customtkinter.CTkLabel(janela_cadastro, text="Nome:").grid(row=1, column=0)
+        self.nome_entry = customtkinter.CTkEntry(janela_cadastro)
+        self.nome_entry.grid(row=1, column=1)
+
+        customtkinter.CTkLabel(janela_cadastro, text="Idade:").grid(row=2, column=0)
+        self.idade_entry = customtkinter.CTkEntry(janela_cadastro)
+        self.idade_entry.grid(row=2, column=1)
+
+        customtkinter.CTkLabel(janela_cadastro, text="Email:").grid(row=3, column=0)
+        self.email_entry = customtkinter.CTkEntry(janela_cadastro)
+        self.email_entry.grid(row=3, column=1)
+
+        customtkinter.CTkLabel(janela_cadastro, height=0, text="Endereço:").grid(row=4, column=0)
+        self.endereco_entry = customtkinter.CTkEntry(janela_cadastro)
+        self.endereco_entry.grid(row=4, column=1)
+
+        botao_salvar_cadastro = customtkinter.CTkButton(janela_cadastro, text="Salvar", command=self.salvar_usuario)
+        botao_salvar_cadastro.grid(row=5, column=3, pady=10)
+
+        self.conversa_cadastro_label = customtkinter.CTkLabel(janela_cadastro, text='Janela de Usuários:', font=customtkinter.CTkFont(size=10, weight="bold"))
+        self.conversa_cadastro_label.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
+
+        self.conversa_cadastro = customtkinter.CTkTextbox(janela_cadastro, width=30, height=10, font=customtkinter.CTkFont(size=10, weight="bold"))
+        self.conversa_cadastro.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+
+
+
+    def salvar_usuario(self):
+        self.conversa_cadastro.configure(state='normal')
+        nome = self.nome_entry.get()
+        idade = self.idade_entry.get()
+        email = self.email_entry.get()
+        endereco = self.endereco_entry.get()
+        self.conversa_cadastro.insert(customtkinter.END,f'Cadastrado com sucesso: Nome {nome},' f'Idade: {idade},' f'Email: {email},' f'Endereço: {endereco}')
+       
+
 
 if __name__ == "__main__":
     app = App()
